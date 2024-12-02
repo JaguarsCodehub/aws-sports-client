@@ -55,7 +55,7 @@ export default function CreateEvent() {
         }
 
         try {
-            const response = await fetch(`http://${process.env.NEXT_PUBLIC_API_URL}/events`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events`, {
                 method: 'POST',
                 body: formData,
             });

@@ -10,7 +10,7 @@ export default function AdminSignup() {
         e.preventDefault()
         try {
             const response = await fetch(
-                `http://${process.env.NEXT_PUBLIC_API_URL}/auth/create-organizer?admin_key=${adminKey}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/auth/create-organizer?admin_key=${adminKey}`,
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
