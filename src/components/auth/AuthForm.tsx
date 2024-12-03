@@ -54,7 +54,8 @@ export function AuthForm() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signin`, {
+      const endpoint = isLogin ? 'signin' : 'signup';
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -63,12 +64,17 @@ export function AuthForm() {
       });
 
       if (!response.ok) {
-        throw new Error('Login failed');
+        throw new Error(`${isLogin ? 'Login' : 'Registration'} failed`);
       }
 
       const result = await response.json();
-      const token = result.token;
 
+      if (!isLogin) {
+        setIsLogin(true);
+        return;
+      }
+
+      const token = result.token;
       const decodedToken = parseJwt(token);
 
       await login({
@@ -80,7 +86,7 @@ export function AuthForm() {
 
       router.push(routes.events.participantList);
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error(`${isLogin ? 'Login' : 'Registration'} failed:`, error);
     }
   };
 

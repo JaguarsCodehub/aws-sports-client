@@ -66,15 +66,15 @@ export default function RegistrationsPage() {
                     <div className="flex justify-between items-center">
                         <h1 className="text-3xl font-bold text-gray-800 font-serif">Sports101</h1>
                         {user ? (
-                            <button 
-                                onClick={() => logout()} 
+                            <button
+                                onClick={() => logout()}
                                 className="bg-stone-700 text-white px-6 py-2 rounded-lg hover:bg-stone-800 transition duration-200 font-serif"
                             >
                                 Sign Out
                             </button>
                         ) : (
-                            <button 
-                                onClick={() => router.push('/admin-login')} 
+                            <button
+                                onClick={() => router.push('/admin-login')}
                                 className="bg-stone-700 text-white px-6 py-2 rounded-lg hover:bg-stone-800 transition duration-200 font-serif"
                             >
                                 Login
@@ -96,7 +96,7 @@ export default function RegistrationsPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {requests.map((request) => (
                             <Card key={request.id} className="shadow-lg hover:shadow-xl transition duration-300 bg-white">
-                                <CardHeader className="flex flex-row items-center justify-between bg-stone-500 text-white rounded-t-lg">
+                                <CardHeader className="flex flex-row items-center justify-between bg-lime-800 text-white rounded-t-lg">
                                     <div>
                                         <CardTitle className="font-serif text-2xl">{request.full_name}</CardTitle>
                                         <Badge className="bg-stone-700 text-white mt-2">{request.status}</Badge>
