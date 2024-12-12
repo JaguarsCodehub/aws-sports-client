@@ -43,14 +43,7 @@ export default function CreateEvent() {
         e.preventDefault();
         setError(null);
 
-        // Split the date and time
-        const [datePart, timePart] = event.date.split(' ');
-        const [day, month, year] = datePart.split('/');
-
-        // Create date string in YYYY-MM-DD format
-        const formattedDate = `${year}-${month}-${day}T${timePart}`;
-        const eventDate = new Date(formattedDate);
-
+        const eventDate = new Date(event.date);
         if (isNaN(eventDate.getTime())) {
             setError('Invalid date format');
             return;
