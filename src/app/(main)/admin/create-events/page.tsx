@@ -43,7 +43,14 @@ export default function CreateEvent() {
         e.preventDefault();
         setError(null);
 
-        const eventDate = new Date(event.date);
+        // Split the date and time
+        const [datePart, timePart] = event.date.split(' ');
+        const [day, month, year] = datePart.split('/');
+
+        // Create date string in YYYY-MM-DD format
+        const formattedDate = `${year}-${month}-${day}T${timePart}`;
+        const eventDate = new Date(formattedDate);
+
         if (isNaN(eventDate.getTime())) {
             setError('Invalid date format');
             return;
@@ -114,6 +121,7 @@ export default function CreateEvent() {
                         value={event.date}
                         onChange={handleInputChange}
                         className="w-full p-2 border rounded"
+                        pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}"
                         required
                     />
                 </div>
