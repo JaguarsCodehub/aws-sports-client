@@ -26,10 +26,18 @@ export default function CreateEvent() {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+
         if (name === 'max_participants') {
             setEvent((prev) => ({
                 ...prev,
                 [name]: Number(value)
+            }));
+        } else if (name === 'date') {
+            // Ensure the date is in the correct format
+            const dateValue = value.replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3-$2-$1');
+            setEvent((prev) => ({
+                ...prev,
+                [name]: dateValue
             }));
         } else {
             setEvent((prev) => ({
@@ -43,24 +51,26 @@ export default function CreateEvent() {
         e.preventDefault();
         setError(null);
 
-        const eventDate = new Date(event.date);
-        if (isNaN(eventDate.getTime())) {
-            setError('Invalid date format');
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('title', event.title);
-        formData.append('description', event.description);
-        formData.append('date', eventDate.toISOString());
-        formData.append('location', event.location);
-        formData.append('max_participants', String(event.max_participants));
-        formData.append('organizer_id', localStorage.getItem('organizer_id')!);
-        if (banner) {
-            formData.append('banner', banner);
-        }
-
         try {
+            const eventDate = new Date(event.date);
+            if (isNaN(eventDate.getTime())) {
+                setError('Invalid date format');
+                return;
+            }
+
+            const formattedDate = eventDate.toISOString().split('.')[0];
+
+            const formData = new FormData();
+            formData.append('title', event.title);
+            formData.append('description', event.description);
+            formData.append('date', formattedDate);
+            formData.append('location', event.location);
+            formData.append('max_participants', String(event.max_participants));
+            formData.append('organizer_id', localStorage.getItem('organizer_id')!);
+            if (banner) {
+                formData.append('banner', banner);
+            }
+
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events`, {
                 method: 'POST',
                 body: formData,
@@ -109,12 +119,13 @@ export default function CreateEvent() {
                 <div>
                     <label className="block mb-1">Date</label>
                     <input
-                        type="datetime-local"
+                        type="date"
                         name="date"
                         value={event.date}
                         onChange={handleInputChange}
                         className="w-full p-2 border rounded"
-                        pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}"
+                        // Set a default format that works across browsers
+                        // defaultValue={new Date().toISOString().slice(0, 16)}
                         required
                     />
                 </div>
