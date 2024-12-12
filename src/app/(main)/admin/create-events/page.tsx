@@ -43,10 +43,16 @@ export default function CreateEvent() {
         e.preventDefault();
         setError(null);
 
+        const eventDate = new Date(event.date);
+        if (isNaN(eventDate.getTime())) {
+            setError('Invalid date format');
+            return;
+        }
+
         const formData = new FormData();
         formData.append('title', event.title);
         formData.append('description', event.description);
-        formData.append('date', new Date(event.date).toISOString());
+        formData.append('date', eventDate.toISOString());
         formData.append('location', event.location);
         formData.append('max_participants', String(event.max_participants));
         formData.append('organizer_id', localStorage.getItem('organizer_id')!);
